@@ -98,7 +98,7 @@
     "technical_owner": null,
     "content_owner": null,
     "update_frequency": null,
-    "content_updated_at": null
+    "content_updated_at": "2026-11-10"
   },
   "provenance": {
     "sources": [
@@ -193,6 +193,12 @@
           "S22"
         ],
         "note": "Contenido técnico declarado por la fuente; no acredita ejecución ni validación."
+      },
+      {
+        "pointer": "/governance/content_updated_at",
+        "status": "declarado",
+        "source_ids": [],
+        "note": "Fecha de actualización de contenido registrada por el equipo el 2026-11-10 al incorporar los parámetros de corrida verificados (umbral de nubosidad 20 %, enmascaramiento SCL clases 4-5-6) en content/metodologia.md."
       }
     ]
   },

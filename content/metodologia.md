@@ -174,6 +174,16 @@ Valoración económica y pérdidas
 
 Despliegue digital
 
+### Parámetros de corrida verificados
+
+El equipo utilizará los siguientes parámetros operativos para el procesamiento de imágenes Sentinel-2 L2A:
+
+- **Umbral máximo de nubosidad:** 20 % (se descartan escenas con cobertura de nubes superior a este valor).
+- **Enmascaramiento SCL:** se aplica la máscara de clasificación de escena (Scene Classification Layer) reteniendo únicamente los píxeles de las clases 4 (vegetación), 5 (suelo desnudo / no vegetado) y 6 (agua), con exclusión de nubes, sombras de nubes, nieve y valores no clasificados.
+- **Sensor y nivel de procesamiento:** Sentinel-2 L2A (corrección atmosférica de superficie, resolución 10 m).
+
+Estos parámetros aplican a todos los compuestos de huella urbana (2018, 2021 y 2024) y serán documentados en el flujo de trabajo reproducible del repositorio.
+
 ## Referencias documentales del expediente
 
 - `S21` — `0. Perfiles de Proyectos/Grupo 6_Republica Dominicana_Zonificación/Ficha_06_Republica_Dominicana_Zonificacion_Riesgo_Gran_Santo_Domingo.docx`.
