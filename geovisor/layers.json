@@ -1,0 +1,148 @@
+{
+  "schema_version": "1.0.0",
+  "project_id": "do-santiago",
+  "title": "Santiago: zonificación del riesgo de desastres",
+  "country": {
+    "code": "DO",
+    "name": "República Dominicana"
+  },
+  "map_view": {
+    "center": [
+      -70.697,
+      19.4517
+    ],
+    "zoom": 11.3,
+    "declared_centroid": [
+      -70.73656,
+      19.49818
+    ],
+    "is_referential": true,
+    "reference_note": "Centroide municipal declarado en S22: 19.49818, -70.73656 (Municipio de Santiago de los Caballeros, 222 barrios/parajes ONE, ≈ 42.927 ha). El antecedente de Gran Santo Domingo (S21) se mantiene estrictamente separado.",
+    "area_declared": "42.927 ha (≈ 429,3 km²) sobre el límite municipal oficial (UTM 19N) según S22.",
+    "scale_label": "Municipal, barrio/paraje (222 unidades ONE) y microcuenca piloto"
+  },
+  "geolibre_integration": {
+    "web_app_base_url": "https://web.geolibre.app/",
+    "project_file": "geovisor/proyecto.geolibre.json",
+    "embed_layout": "maponly",
+    "supports_local_geojson_preview": true
+  },
+  "planned_controls": [
+    "Separación explícita entre huella urbana observada (Sentinel-2: 2018, 2021, 2024) y proyección exploratoria (2027–2036).",
+    "Selector de escenarios hidrológicos HAND por clase de drenaje (cañadas, tributarios, río Yaque del Norte), indicando estado de calibración frente a periodos de retorno.",
+    "Consulta agregada por los 222 barrios/parajes (ONE) diferenciando exposición física de estimaciones económicas sujetas a supuestos.",
+    "Conmutador para piloto de susceptibilidad a deslizamientos (CRISIS) y propuestas preliminares para el PMOT."
+  ],
+  "external_references": [
+    {
+      "label": "Simulador demostrativo reportado en el perfil S22 (disponibilidad y calibración por verificar)",
+      "url": "https://claude.ai/artifact/CeTpKKh4j3n7BTKmXQCFEe",
+      "kind": "referencia_declarada",
+      "note": "Enlace exacto suministrado en S22. Las métricas y escenarios reportados son declaraciones del perfil pendientes de evidencia reproducible."
+    },
+    {
+      "label": "MOLUSCE (QGIS plugin de referencia metodológica)",
+      "url": "https://github.com/nextgis/qgis_molusce",
+      "kind": "documentacion_tecnica",
+      "note": "Referencia técnica citada en S22 para modelación de cambio de uso del suelo."
+    },
+    {
+      "label": "Modelo abierto CRISIS (DesignSafe PRJ-6509)",
+      "url": "https://doi.org/10.17603/ds2-qs1s-1f14",
+      "kind": "documentacion_tecnica",
+      "note": "Referencia citada en S22 para el piloto de estabilidad de laderas por lluvia y sismo."
+    }
+  ],
+  "layers": [
+    {
+      "id": "do-santiago-barrios-one",
+      "title": "Límite municipal y 222 barrios/parajes (ONE)",
+      "group": "Unidades territoriales",
+      "format": "geojson",
+      "geometry_type": "polygon",
+      "status": "en_preparacion",
+      "source_path": null,
+      "expected_file_hint": "geovisor/data/santiago_barrios_one.geojson",
+      "resolution": "Cartografía censal oficial ONE",
+      "style": {
+        "fill_color": "#14283F",
+        "fill_opacity": 0.06,
+        "stroke_color": "#14283F",
+        "stroke_width": 1.5
+      },
+      "caveat": "Base territorial oficial para agregación de indicadores municipales."
+    },
+    {
+      "id": "do-santiago-huella-observada",
+      "title": "Huella urbana observada Sentinel-2 L2A (2018, 2021, 2024 — 10 m)",
+      "group": "Crecimiento urbano",
+      "format": "xyz_or_cog",
+      "geometry_type": "raster",
+      "status": "en_preparacion",
+      "source_path": null,
+      "expected_file_hint": "geovisor/data/santiago_huella_2018_2024.geojson o COG",
+      "resolution": "10 m (Sentinel-2 L2A)",
+      "style": {
+        "fill_color": "#007F8B",
+        "fill_opacity": 0.5,
+        "stroke_color": "#005a63",
+        "stroke_width": 1
+      },
+      "caveat": "La métrica reportada F1=0,97 requiere adjuntar muestras y script reproducible de validación."
+    },
+    {
+      "id": "do-santiago-proyeccion-2036",
+      "title": "Escenario proyectado de crecimiento urbano 2027–2036 (tipo MOLUSCE)",
+      "group": "Crecimiento urbano",
+      "format": "geojson",
+      "geometry_type": "polygon",
+      "status": "en_preparacion",
+      "source_path": null,
+      "expected_file_hint": "geovisor/data/santiago_proyeccion_2036.geojson",
+      "resolution": "10 m modelado (escenario prospectivo)",
+      "style": {
+        "fill_color": "#fdae61",
+        "fill_opacity": 0.45,
+        "stroke_color": "#d73027",
+        "stroke_width": 1
+      },
+      "caveat": "Proyección modelada bajo supuestos tendenciales; no mezclar con suelo construido observado."
+    },
+    {
+      "id": "do-santiago-inundacion-hand",
+      "title": "Escenarios de susceptibilidad a inundación HAND (Copernicus DEM GLO-30)",
+      "group": "Amenazas y exposición",
+      "format": "geojson",
+      "geometry_type": "polygon",
+      "status": "en_preparacion",
+      "source_path": null,
+      "expected_file_hint": "geovisor/data/santiago_escenarios_hand.geojson",
+      "resolution": "30 m (Copernicus DEM GLO-30)",
+      "style": {
+        "fill_color": "#2b83ba",
+        "fill_opacity": 0.5,
+        "stroke_color": "#08519c",
+        "stroke_width": 1.2
+      },
+      "caveat": "Representa niveles relativos sobre el drenaje (HAND); requiere calibración hidrológica/hidráulica con Sentinel-1, EMS y caudales de INDRHI."
+    },
+    {
+      "id": "do-santiago-deslizamientos-crisis",
+      "title": "Piloto de estabilidad de laderas (CRISIS — lluvia y sismo)",
+      "group": "Amenazas y exposición",
+      "format": "geojson",
+      "geometry_type": "polygon",
+      "status": "en_preparacion",
+      "source_path": null,
+      "expected_file_hint": "geovisor/data/santiago_piloto_crisis.geojson",
+      "resolution": "30 m en ladera piloto",
+      "style": {
+        "fill_color": "#d7191c",
+        "fill_opacity": 0.4,
+        "stroke_color": "#7f0000",
+        "stroke_width": 1.2
+      },
+      "caveat": "Componente piloto en configuración durante la jornada; requiere inventario y parámetros geotécnicos."
+    }
+  ]
+}

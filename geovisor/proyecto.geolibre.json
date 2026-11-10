@@ -1,0 +1,62 @@
+{
+  "version": "1.0.0",
+  "id": "geolibre-do-santiago",
+  "name": "República Dominicana · Santiago: zonificación del riesgo de desastres",
+  "description": "La iniciativa combina análisis de crecimiento urbano, escenarios de inundación y exposición para apoyar la zonificación y las decisiones de inversión y permisos del municipio de Santiago de los Caballeros.",
+  "metadata": {
+    "project_id": "do-santiago",
+    "community": "Comunidad Urbana Copernicus Centroamérica",
+    "referential_frame_only": true,
+    "note": "Centroide municipal declarado en S22: 19.49818, -70.73656 (Municipio de Santiago de los Caballeros, 222 barrios/parajes ONE, ≈ 42.927 ha). El antecedente de Gran Santo Domingo (S21) se mantiene estrictamente separado."
+  },
+  "map": {
+    "engine": "maplibre",
+    "center": [
+      -70.697,
+      19.4517
+    ],
+    "zoom": 11.3,
+    "bearing": 0,
+    "pitch": 0,
+    "basemap": "carto-positron"
+  },
+  "sources": {},
+  "layers": [],
+  "planned_layers": [
+    {
+      "id": "do-santiago-barrios-one",
+      "title": "Límite municipal y 222 barrios/parajes (ONE)",
+      "status": "en_preparacion",
+      "expected_file_hint": "geovisor/data/santiago_barrios_one.geojson",
+      "caveat": "Base territorial oficial para agregación de indicadores municipales."
+    },
+    {
+      "id": "do-santiago-huella-observada",
+      "title": "Huella urbana observada Sentinel-2 L2A (2018, 2021, 2024 — 10 m)",
+      "status": "en_preparacion",
+      "expected_file_hint": "geovisor/data/santiago_huella_2018_2024.geojson o COG",
+      "caveat": "La métrica reportada F1=0,97 requiere adjuntar muestras y script reproducible de validación."
+    },
+    {
+      "id": "do-santiago-proyeccion-2036",
+      "title": "Escenario proyectado de crecimiento urbano 2027–2036 (tipo MOLUSCE)",
+      "status": "en_preparacion",
+      "expected_file_hint": "geovisor/data/santiago_proyeccion_2036.geojson",
+      "caveat": "Proyección modelada bajo supuestos tendenciales; no mezclar con suelo construido observado."
+    },
+    {
+      "id": "do-santiago-inundacion-hand",
+      "title": "Escenarios de susceptibilidad a inundación HAND (Copernicus DEM GLO-30)",
+      "status": "en_preparacion",
+      "expected_file_hint": "geovisor/data/santiago_escenarios_hand.geojson",
+      "caveat": "Representa niveles relativos sobre el drenaje (HAND); requiere calibración hidrológica/hidráulica con Sentinel-1, EMS y caudales de INDRHI."
+    },
+    {
+      "id": "do-santiago-deslizamientos-crisis",
+      "title": "Piloto de estabilidad de laderas (CRISIS — lluvia y sismo)",
+      "status": "en_preparacion",
+      "expected_file_hint": "geovisor/data/santiago_piloto_crisis.geojson",
+      "caveat": "Componente piloto en configuración durante la jornada; requiere inventario y parámetros geotécnicos."
+    }
+  ]
+}
