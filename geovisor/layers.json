@@ -55,6 +55,24 @@
   ],
   "layers": [
     {
+      "id": "do-santiago-municipio-osm",
+      "title": "Límite municipal referencial: Santiago de los Caballeros (OSM ODbL)",
+      "group": "Unidades territoriales",
+      "format": "geojson",
+      "geometry_type": "polygon",
+      "status": "en_revision",
+      "source_path": "geovisor/capas/santiago_municipio_osm.geojson",
+      "expected_file_hint": "geovisor/capas/santiago_municipio_osm.geojson",
+      "resolution": "Vectorial municipal referencial (~43.343 ha, EPSG:4326)",
+      "style": {
+        "fill_color": "#007F8B",
+        "fill_opacity": 0.16,
+        "stroke_color": "#14283F",
+        "stroke_width": 2.2
+      },
+      "caveat": "Fuente externa abierta: OpenStreetMap contributors (ODbL). Carácter referencial hasta incorporar la cartografía oficial de secciones y 222 barrios/parajes de la ONE."
+    },
+    {
       "id": "do-santiago-barrios-one",
       "title": "Límite municipal y 222 barrios/parajes (ONE)",
       "group": "Unidades territoriales",
