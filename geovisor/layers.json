@@ -80,7 +80,7 @@
       "geometry_type": "polygon",
       "status": "en_preparacion",
       "source_path": null,
-      "expected_file_hint": "geovisor/data/santiago_barrios_one.geojson",
+      "expected_file_hint": "geovisor/capas/santiago_barrios_one.geojson",
       "resolution": "Cartografía censal oficial ONE",
       "style": {
         "fill_color": "#14283F",
@@ -98,7 +98,7 @@
       "geometry_type": "raster",
       "status": "en_preparacion",
       "source_path": null,
-      "expected_file_hint": "geovisor/data/santiago_huella_2018_2024.geojson o COG",
+      "expected_file_hint": "geovisor/capas/santiago_huella_2018_2024.geojson o COG",
       "resolution": "10 m (Sentinel-2 L2A)",
       "style": {
         "fill_color": "#007F8B",
@@ -116,7 +116,7 @@
       "geometry_type": "polygon",
       "status": "en_preparacion",
       "source_path": null,
-      "expected_file_hint": "geovisor/data/santiago_proyeccion_2036.geojson",
+      "expected_file_hint": "geovisor/capas/santiago_proyeccion_2036.geojson",
       "resolution": "10 m modelado (escenario prospectivo)",
       "style": {
         "fill_color": "#fdae61",
@@ -134,7 +134,7 @@
       "geometry_type": "polygon",
       "status": "en_preparacion",
       "source_path": null,
-      "expected_file_hint": "geovisor/data/santiago_escenarios_hand.geojson",
+      "expected_file_hint": "geovisor/capas/santiago_escenarios_hand.geojson",
       "resolution": "30 m (Copernicus DEM GLO-30)",
       "style": {
         "fill_color": "#2b83ba",
@@ -152,7 +152,7 @@
       "geometry_type": "polygon",
       "status": "en_preparacion",
       "source_path": null,
-      "expected_file_hint": "geovisor/data/santiago_piloto_crisis.geojson",
+      "expected_file_hint": "geovisor/capas/santiago_piloto_crisis.geojson",
       "resolution": "30 m en ladera piloto",
       "style": {
         "fill_color": "#d7191c",
