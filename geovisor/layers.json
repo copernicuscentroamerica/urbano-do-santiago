@@ -78,7 +78,7 @@
       "group": "Unidades territoriales",
       "format": "geojson",
       "geometry_type": "polygon",
-      "status": "en_revision",
+      "status": "en_preparacion",
       "source_path": "geovisor/capas/santiago_municipio_osm.geojson",
       "expected_file_hint": "geovisor/capas/santiago_municipio_osm.geojson",
       "resolution": "Vectorial municipal referencial (~43.343 ha, EPSG:4326)",
