@@ -1027,6 +1027,9 @@
         p.classList.toggle("is-active", p.getAttribute("data-gv-panel") === mode);
       });
 
+      var urbanLegend = document.getElementById("gv-urban-legend");
+      if (urbanLegend) urbanLegend.hidden = (mode === "embed");
+
       if (mode === "embed") {
         if (isHttpsPublic && iframeEl) {
           canvas.style.display = "none";
@@ -1252,6 +1255,21 @@
       attachFeatureClickPopup(prefixId + "-pt", badgeLabel, layerTitle);
     }
 
+    // La leyenda refleja los interruptores del panel; los años apagados se atenúan.
+    function syncUrbanLegend() {
+      var legend = document.getElementById("gv-urban-legend");
+      if (!legend) return;
+      var entries = legend.querySelectorAll("[data-urban-legend-id]");
+      Array.prototype.forEach.call(entries, function (entry) {
+        var id = entry.getAttribute("data-urban-legend-id");
+        var control = document.querySelector('[data-layer-toggle="' + id + '"]');
+        var active = Boolean(control && control.checked && !control.disabled);
+        entry.classList.toggle("is-hidden", !active);
+        entry.setAttribute("title", active ? "Capa visible" : "Capa oculta");
+      });
+    }
+    syncUrbanLegend();
+
     function addActiveProjectLayers() {
       var layers = Array.isArray(cfg.layers) ? cfg.layers : [];
       var combinedBounds = null;
@@ -1288,6 +1306,16 @@
                 "CAPA DEL PROYECTO · " + (lyr.status || "").toUpperCase(),
                 lyr.title
               );
+              // Mantener el estado escogido por el usuario tras un cambio de mapa base.
+              var toggle = document.querySelector('[data-layer-toggle="' + lyr.id + '"]');
+              if (toggle && !toggle.checked) {
+                ["-fill", "-line", "-pt"].forEach(function (suffix) {
+                  if (mapInstance.getLayer(lyr.id + suffix)) {
+                    mapInstance.setLayoutProperty(lyr.id + suffix, "visibility", "none");
+                  }
+                });
+              }
+              syncUrbanLegend();
               if (!initialBoundsFitted) {
                 var b = computeGeoJsonBounds(gj);
                 if (b) {
@@ -1310,7 +1338,6 @@
           var chk = document.querySelector('[data-layer-toggle="' + lyr.id + '"]');
           if (chk) {
             chk.disabled = false;
-            chk.checked = true;
             chk.onchange = function () {
               var vis = chk.checked ? "visible" : "none";
               ["-fill", "-line", "-pt"].forEach(function (suf) {
@@ -1318,6 +1345,7 @@
                   mapInstance.setLayoutProperty(lyr.id + suf, "visibility", vis);
                 }
               });
+              syncUrbanLegend();
             };
           }
           var slider = document.querySelector('[data-layer-opacity="' + lyr.id + '"]');
