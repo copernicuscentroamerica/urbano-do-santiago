@@ -887,13 +887,23 @@ def build_aplicacion_page(
                 if lyr.get("caveat")
                 else ""
             )
+            # Muestra junto al control el color efectivo de cada período urbano.
+            color_capa = str(lyr.get("style", {}).get("fill_color", ""))
+            color_valido = (
+                len(color_capa) == 7 and color_capa.startswith("#")
+                and all(c in "0123456789abcdefABCDEF" for c in color_capa[1:])
+            )
+            swatch_html = (
+                f'<span class="urban-layer-swatch" style="background:{color_capa}" aria-hidden="true"></span>'
+                if lid.startswith("do-santiago-expansion-") and color_valido else ""
+            )
             items_html.append(
                 f"""
                 <div class="layer-item">
                   <div class="layer-item-head">
                     <label class="layer-item-title">
                       <input type="checkbox" data-layer-toggle="{esc(lid)}"{checked_attr}{disabled_attr}>
-                      <span>{esc(lyr['title'])}</span>
+                      {swatch_html}<span>{esc(lyr['title'])}</span>
                     </label>
                     {badge_html(lyr.get('status', 'en_preparacion'))}
                   </div>
@@ -908,6 +918,51 @@ def build_aplicacion_page(
                 """
             )
         groups_html.append(f'<div class="layer-group-title">{esc(grp_name)}</div>' + "".join(items_html))
+
+    # Leyenda cartográfica visible sobre el mapa, construida del mismo catálogo
+    # y de los mismos colores que los interruptores de capas.
+    legend_classified: list[str] = []
+    legend_simulated: list[str] = []
+    for lyr in layers_cfg.get("layers", []):
+        lid = str(lyr.get("id", ""))
+        if not lid.startswith("do-santiago-expansion-"):
+            continue
+        if lyr.get("status") not in ("en_revision", "publicado") or not lyr.get("source_path"):
+            continue
+        year_str = lid.rsplit("-", 1)[-1]
+        if not (len(year_str) == 4 and year_str.isdigit()):
+            continue
+        color = str(lyr.get("style", {}).get("fill_color", ""))
+        if not (len(color) == 7 and color.startswith("#") and all(c in "0123456789abcdefABCDEF" for c in color[1:])):
+            continue
+        legend_row = (
+            f'<span class="urban-legend-row" data-urban-legend-id="{esc(lid)}">'
+            f'<span class="urban-legend-swatch" style="background:{color}" aria-hidden="true"></span>'
+            f'<span>{year_str}</span></span>'
+        )
+        if int(year_str) <= 2024:
+            legend_classified.append(legend_row)
+        else:
+            legend_simulated.append(legend_row)
+
+    urban_legend_html = ""
+    if legend_classified or legend_simulated:
+        urban_legend_html = f"""
+          <details id="gv-urban-legend" class="urban-map-legend" open>
+            <summary>Leyenda · expansión urbana</summary>
+            <div class="urban-map-legend-body">
+              <div class="urban-map-legend-group">
+                <strong>Clasificado · 2018–2024</strong>
+                <div class="urban-map-legend-years">{"".join(legend_classified)}</div>
+              </div>
+              <div class="urban-map-legend-group">
+                <strong>Simulado · 2027–2036</strong>
+                <div class="urban-map-legend-years">{"".join(legend_simulated)}</div>
+              </div>
+              <p class="urban-map-legend-note">Cada color indica el período de primera clasificación o expansión modelada. No representa el acumulado. Vista generalizada a 100 m; no apta para medir superficies ni delimitar riesgos.</p>
+            </div>
+          </details>
+        """
 
     controls_li = "".join(f"<li>{esc(c)}</li>" for c in layers_cfg.get("planned_controls", []))
     ext_refs_html = ""
@@ -1133,6 +1188,7 @@ def build_aplicacion_page(
             </div>
           </div>
           <div id="geovisor-map-canvas" class="geovisor-canvas" role="region" aria-label="Mapa interactivo del proyecto"></div>
+          {urban_legend_html}
           <iframe id="geolibre-embed-iframe" class="geovisor-iframe" title="Visor GeoLibre embebido" allowfullscreen loading="lazy"></iframe>
           <div class="geovisor-statusbar">
             <span id="gv-coords-readout">Encuadre referencial inicial: Lat {mv.get('center', [0, 0])[1]:.4f} · Lon {mv.get('center', [0, 0])[0]:.4f}</span>
