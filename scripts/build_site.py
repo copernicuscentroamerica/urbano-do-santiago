@@ -6,6 +6,7 @@ Generador estático determinista (scripts/build_site.py) para cada repositorio d
 from __future__ import annotations
 
 import argparse
+import csv
 import html
 import json
 import os
@@ -887,13 +888,23 @@ def build_aplicacion_page(
                 if lyr.get("caveat")
                 else ""
             )
+            # Muestra junto al control el color efectivo de cada período urbano.
+            color_capa = str(lyr.get("style", {}).get("fill_color", ""))
+            color_valido = (
+                len(color_capa) == 7 and color_capa.startswith("#")
+                and all(c in "0123456789abcdefABCDEF" for c in color_capa[1:])
+            )
+            swatch_html = (
+                f'<span class="urban-layer-swatch" style="background:{color_capa}" aria-hidden="true"></span>'
+                if lid.startswith("do-santiago-expansion-") and color_valido else ""
+            )
             items_html.append(
                 f"""
                 <div class="layer-item">
                   <div class="layer-item-head">
                     <label class="layer-item-title">
                       <input type="checkbox" data-layer-toggle="{esc(lid)}"{checked_attr}{disabled_attr}>
-                      <span>{esc(lyr['title'])}</span>
+                      {swatch_html}<span>{esc(lyr['title'])}</span>
                     </label>
                     {badge_html(lyr.get('status', 'en_preparacion'))}
                   </div>
@@ -908,6 +919,142 @@ def build_aplicacion_page(
                 """
             )
         groups_html.append(f'<div class="layer-group-title">{esc(grp_name)}</div>' + "".join(items_html))
+
+    # Leyenda cartográfica visible sobre el mapa, construida del mismo catálogo
+    # y de los mismos colores que los interruptores de capas.
+    legend_classified: list[str] = []
+    legend_simulated: list[str] = []
+    for lyr in layers_cfg.get("layers", []):
+        lid = str(lyr.get("id", ""))
+        if not lid.startswith("do-santiago-expansion-"):
+            continue
+        if lyr.get("status") not in ("en_revision", "publicado") or not lyr.get("source_path"):
+            continue
+        year_str = lid.rsplit("-", 1)[-1]
+        if not (len(year_str) == 4 and year_str.isdigit()):
+            continue
+        color = str(lyr.get("style", {}).get("fill_color", ""))
+        if not (len(color) == 7 and color.startswith("#") and all(c in "0123456789abcdefABCDEF" for c in color[1:])):
+            continue
+        legend_row = (
+            f'<span class="urban-legend-row" data-urban-legend-id="{esc(lid)}">'
+            f'<span class="urban-legend-swatch" style="background:{color}" aria-hidden="true"></span>'
+            f'<span>{year_str}</span></span>'
+        )
+        if int(year_str) <= 2024:
+            legend_classified.append(legend_row)
+        else:
+            legend_simulated.append(legend_row)
+
+    urban_legend_html = ""
+    if legend_classified or legend_simulated:
+        urban_legend_html = f"""
+          <details id="gv-urban-legend" class="urban-map-legend" open>
+            <summary>Leyenda · expansión urbana</summary>
+            <div class="urban-map-legend-body">
+              <div class="urban-map-legend-group">
+                <strong>Clasificado · 2018–2024</strong>
+                <div class="urban-map-legend-years">{"".join(legend_classified)}</div>
+              </div>
+              <div class="urban-map-legend-group">
+                <strong>Simulado · 2027–2036</strong>
+                <div class="urban-map-legend-years">{"".join(legend_simulated)}</div>
+              </div>
+              <p class="urban-map-legend-note">Cada color indica el período de primera clasificación o expansión modelada. No representa el acumulado. Vista generalizada a 100 m; no apta para medir superficies ni delimitar riesgos.</p>
+            </div>
+          </details>
+        """
+
+
+    # Indicadores de dominio público. Se construyen desde archivos fuente
+    # versionados para evitar tablas y gráficas divergentes.
+    def number_es(value: float, decimals: int = 2) -> str:
+        formatted = f"{value:,.{decimals}f}"
+        return formatted.replace(",", "@").replace(".", ",").replace("@", ".")
+
+    urban_csv = ROOT / "geovisor" / "data" / "indicadores_expansion_urbana_santiago_2018_2036.csv"
+    ghsl_csv = ROOT / "geovisor" / "data" / "comparacion_ghsl_2020_sentinel_2021_santiago.csv"
+    with urban_csv.open(encoding="utf-8", newline="") as source:
+        urban_indicators = list(csv.DictReader(source))
+    with ghsl_csv.open(encoding="utf-8", newline="") as source:
+        ghsl_comparison = list(csv.DictReader(source))
+    if len(urban_indicators) != 7 or [int(x["anio"]) for x in urban_indicators] != [2018, 2021, 2024, 2027, 2030, 2033, 2036]:
+        raise ValueError("Serie de expansión urbana incompleta o fuera de orden")
+    if [float(x["umbral_construido_sentinel"]) for x in ghsl_comparison] != [0.25, 0.50, 0.75]:
+        raise ValueError("Umbrales GHSL–Sentinel-2 incompletos")
+    max_area = float(urban_indicators[-1]["km2_acumulados"])
+    urban_table_rows: list[str] = []
+    for item in urban_indicators:
+        year = int(item["anio"])
+        kind = str(item["tipo"])
+        if kind not in ("clasificado", "simulado"):
+            raise ValueError(f"Tipo urbano inesperado: {kind}")
+        accumulated = float(item["km2_acumulados"])
+        increment = float(item["km2_periodo"])
+        change_pct = item.get("crecimiento_periodo_pct") or ""
+        pct_width = min(100.0, accumulated * 100.0 / max_area)
+        urban_table_rows.append(
+            f'<tr><th scope="row">{year}</th>'
+            f'<td>{"Clasificado" if kind == "clasificado" else "Simulado · escenario"}</td>'
+            f'<td class="urban-number">{number_es(accumulated)}</td>'
+            f'<td class="urban-number">{"Base inicial" if year == 2018 else number_es(increment)}</td>'
+            f'<td class="urban-number">{number_es(float(change_pct)) + " %" if change_pct else "—"}</td>'
+            f'<td><div class="urban-scale-bar" aria-label="{number_es(accumulated)} kilómetros cuadrados acumulados">'
+            f'<span class="urban-scale-bar-fill {"is-simulated" if kind == "simulado" else "is-classified"}" '
+            f'style="width:{pct_width:.1f}%"></span></div></td></tr>'
+        )
+
+    ghsl_table_rows: list[str] = []
+    for item in ghsl_comparison:
+        threshold = float(item["umbral_construido_sentinel"])
+        jaccard = float(item["jaccard"])
+        if not (0 <= threshold <= 1 and 0 <= jaccard <= 1):
+            raise ValueError("Índice GHSL o umbral fuera de rango")
+        ghsl_table_rows.append(
+            f'<tr><th scope="row">{int(threshold * 100)} %</th>'
+            f'<td class="urban-number">{number_es(float(item["ghsl_consolidado_km2"]))}</td>'
+            f'<td class="urban-number">{number_es(float(item["sentinel_agregado_km2"]))}</td>'
+            f'<td class="urban-number">{number_es(jaccard * 100)} %</td></tr>'
+        )
+
+    urban_indicators_html = f"""
+    <section class="section" aria-labelledby="urban-indicators-heading">
+      <div class="container">
+        <h2 id="urban-indicators-heading">Indicadores descriptivos de expansión urbana</h2>
+        <p>Serie cartográfica municipal de Santiago de los Caballeros, sobre el límite ONE. Los años posteriores a 2024 son simulaciones exploratorias y <strong>no constituyen predicciones validadas ni zonificación normativa</strong>.</p>
+        <div class="urban-indicators-grid">
+          <article class="urban-summary-panel">
+            <h3>Superficie clasificada y escenarios 2018–2036</h3>
+            <div class="urban-metric-strip">
+              <div><strong>{number_es(float(urban_indicators[0]["km2_acumulados"]))}</strong><span>km² · clasificado 2018</span></div>
+              <div><strong>{number_es(float(urban_indicators[2]["km2_acumulados"]))}</strong><span>km² · clasificado 2024</span></div>
+              <div><strong>{number_es(float(urban_indicators[6]["km2_acumulados"]))}</strong><span>km² · escenario 2036</span></div>
+            </div>
+            <div class="table-wrap">
+              <table class="urban-indicators-table">
+                <thead><tr><th>Año</th><th>Tipo</th><th>Acumulado (km²)</th><th>Incremento período (km²)</th><th>Cambio trienal</th><th>Escala visual acumulada</th></tr></thead>
+                <tbody>{"".join(urban_table_rows)}</tbody>
+              </table>
+            </div>
+            <p class="urban-data-note">Los colores del mapa muestran el período en que se identifica por primera vez el crecimiento, no siete huellas acumuladas. La tabla sí presenta superficies acumuladas. Los GeoJSON generalizados a 100 m son solo para visualización.</p>
+            <p><a href="{ctx.site_url("geovisor/data/indicadores_expansion_urbana_santiago_2018_2036.csv")}" download>Descargar serie urbana 2018–2036 (CSV)</a></p>
+          </article>
+          <article class="urban-summary-panel">
+            <h3>Contraste espacial GHSL–Sentinel-2</h3>
+            <p><strong>2020 frente a 2021:</strong> capa local de año de consolidación GHSL hasta 2020 comparada con huella urbana Sentinel-2 clasificada para 2021, agregada a la malla GHSL de aproximadamente 30 m.</p>
+            <div class="table-wrap">
+              <table class="urban-indicators-table">
+                <thead><tr><th>Umbral de agregado Sentinel</th><th>GHSL 2020 (km²)</th><th>Sentinel agregado (km²)</th><th>Coincidencia Jaccard</th></tr></thead>
+                <tbody>{"".join(ghsl_table_rows)}</tbody>
+              </table>
+            </div>
+            <p class="urban-data-note">El índice de Jaccard es la intersección dividida entre la unión de las dos capas. <strong>No mide la exactitud temática de Sentinel-2.</strong> GHSL y Sentinel emplean fechas, criterios y resoluciones diferentes; la validación independiente de 2024 sigue pendiente.</p>
+            <p><a href="{ctx.site_url("geovisor/data/comparacion_ghsl_2020_sentinel_2021_santiago.csv")}" download>Descargar sensibilidad GHSL–Sentinel (CSV)</a></p>
+          </article>
+        </div>
+      </div>
+    </section>
+    """
 
     controls_li = "".join(f"<li>{esc(c)}</li>" for c in layers_cfg.get("planned_controls", []))
     ext_refs_html = ""
@@ -1133,6 +1280,7 @@ def build_aplicacion_page(
             </div>
           </div>
           <div id="geovisor-map-canvas" class="geovisor-canvas" role="region" aria-label="Mapa interactivo del proyecto"></div>
+          {urban_legend_html}
           <iframe id="geolibre-embed-iframe" class="geovisor-iframe" title="Visor GeoLibre embebido" allowfullscreen loading="lazy"></iframe>
           <div class="geovisor-statusbar">
             <span id="gv-coords-readout">Encuadre referencial inicial: Lat {mv.get('center', [0, 0])[1]:.4f} · Lon {mv.get('center', [0, 0])[0]:.4f}</span>
@@ -1142,6 +1290,8 @@ def build_aplicacion_page(
       </div>
       <script id="geovisor-config-data" type="application/json">{safe_json_cfg}</script>
     </section>
+
+    {urban_indicators_html}
 
     <section class="section">
       <div class="grid-2">
