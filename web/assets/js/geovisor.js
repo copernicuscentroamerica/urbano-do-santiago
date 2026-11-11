@@ -781,7 +781,7 @@
     };
   }
 
-  function applyStudyAreaMaskToMap(targetMap, perimeterGeoJson, maskEnabled, maskOpacity) {
+  function applyStudyAreaMaskToMap(targetMap, perimeterGeoJson, maskEnabled, maskOpacity, showPerimeter) {
     if (!targetMap || !perimeterGeoJson) return;
     var inverted = buildInvertedMaskGeoJson(perimeterGeoJson);
     if (!inverted) return;
@@ -807,25 +807,29 @@
         "fill-opacity": op
       }
     });
-    targetMap.addLayer({
-      id: "study-area-perimeter-glow",
-      type: "line",
-      source: "study-area-perim-src",
-      paint: {
-        "line-color": "#FFCC00",
-        "line-width": 3.4,
-        "line-opacity": 0.92
-      }
-    });
-    targetMap.addLayer({
-      id: "study-area-perimeter-stroke",
-      type: "line",
-      source: "study-area-perim-src",
-      paint: {
-        "line-color": "#FFFFFF",
-        "line-width": 1.3
-      }
-    });
+    // El geovisor de proyecto ya dibuja el límite municipal de la ONE como capa.
+    // Evitar un segundo contorno de la máscara; el Atlas conserva su trazo habitual.
+    if (showPerimeter !== false) {
+      targetMap.addLayer({
+        id: "study-area-perimeter-glow",
+        type: "line",
+        source: "study-area-perim-src",
+        paint: {
+          "line-color": "#FFCC00",
+          "line-width": 3.4,
+          "line-opacity": 0.92
+        }
+      });
+      targetMap.addLayer({
+        id: "study-area-perimeter-stroke",
+        type: "line",
+        source: "study-area-perim-src",
+        paint: {
+          "line-color": "#FFFFFF",
+          "line-width": 1.3
+        }
+      });
+    }
   }
 
   function parseKmlToGeoJson(kmlText) {
@@ -1370,7 +1374,7 @@
         var maskOpEl = document.getElementById("gv-mask-opacity");
         var maskEnabled = maskToggleEl ? maskToggleEl.checked : true;
         var maskOp = maskOpEl ? parseFloat(maskOpEl.value) : 0.88;
-        applyStudyAreaMaskToMap(mapInstance, projectPerimeterGeoJson, maskEnabled, maskOp);
+        applyStudyAreaMaskToMap(mapInstance, projectPerimeterGeoJson, maskEnabled, maskOp, false);
       }
     }
 
@@ -1390,7 +1394,7 @@
             var maskEnabled = maskToggleEl ? maskToggleEl.checked : true;
             var maskOp = maskOpEl ? parseFloat(maskOpEl.value) : 0.88;
             if (mapInstance.isStyleLoaded()) {
-              applyStudyAreaMaskToMap(mapInstance, projectPerimeterGeoJson, maskEnabled, maskOp);
+              applyStudyAreaMaskToMap(mapInstance, projectPerimeterGeoJson, maskEnabled, maskOp, false);
             }
           }
         })
@@ -1403,7 +1407,7 @@
           if (mapInstance.getLayer("study-area-mask-fill")) {
             mapInstance.setLayoutProperty("study-area-mask-fill", "visibility", gvMaskToggle.checked ? "visible" : "none");
           } else if (projectPerimeterGeoJson) {
-            applyStudyAreaMaskToMap(mapInstance, projectPerimeterGeoJson, gvMaskToggle.checked, gvMaskOpacity ? parseFloat(gvMaskOpacity.value) : 0.88);
+            applyStudyAreaMaskToMap(mapInstance, projectPerimeterGeoJson, gvMaskToggle.checked, gvMaskOpacity ? parseFloat(gvMaskOpacity.value) : 0.88, false);
           }
         });
       }
