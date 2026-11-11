@@ -55,6 +55,24 @@
   ],
   "layers": [
     {
+      "id": "do-santiago-municipio-one",
+      "title": "Límite municipal ONE (generalizado para visualización)",
+      "group": "Unidades territoriales",
+      "format": "geojson",
+      "geometry_type": "polygon",
+      "status": "en_revision",
+      "source_path": "geovisor/capas/santiago_municipio_one_vista.geojson",
+      "expected_file_hint": "geovisor/capas/santiago_municipio_one_vista.geojson",
+      "resolution": "Polígono municipal ONE, generalización cartográfica 60 m, EPSG:4326",
+      "style": {
+        "fill_color": "#e4a82b",
+        "fill_opacity": 0.08,
+        "stroke_color": "#132C4A",
+        "stroke_width": 2.8
+      },
+      "caveat": "Fuente: ONE; límite obtenido por unión de 31 secciones (429,27 km² originales). Geometría generalizada solo para geovisor; NO emplear para recortes, medición de superficies o decisiones normativas. El GeoPackage original EPSG:32619 permanece fuera de esta capa web."
+    },
+    {
       "id": "do-santiago-municipio-osm",
       "title": "Límite municipal referencial: Santiago de los Caballeros (OSM ODbL)",
       "group": "Unidades territoriales",
