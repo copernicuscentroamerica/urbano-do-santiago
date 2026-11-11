@@ -1302,7 +1302,87 @@ tr:last-child td {
 
 .geovisor-shell:fullscreen .geovisor-stage,
 .geovisor-shell:-webkit-full-screen .geovisor-stage,
-.geovisor-shell.is-fullscreen .geovisor-stage {
+.geovisor-shell.is-fullscreen /* Leyenda temporal del geovisor de Santiago. No afecta a GeoLibre embebido. */
+.urban-layer-swatch {
+  display: inline-block;
+  flex: 0 0 15px;
+  height: 15px;
+  margin-top: 2px;
+  border: 1px solid rgba(18, 34, 60, 0.45);
+  border-radius: 3px;
+}
+.urban-map-legend {
+  position: absolute;
+  z-index: 6;
+  left: 14px;
+  bottom: 54px;
+  width: min(340px, calc(100% - 28px));
+  max-height: min(370px, 57vh);
+  overflow: auto;
+  color: #14283F;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #B6C0D1;
+  border-radius: 9px;
+  box-shadow: 0 3px 14px rgba(5, 15, 40, 0.18);
+  font-size: 0.8rem;
+}
+.urban-map-legend summary {
+  padding: 0.62rem 0.72rem;
+  cursor: pointer;
+  font-weight: 800;
+  color: #061449;
+}
+.urban-map-legend-body {
+  padding: 0 0.72rem 0.6rem;
+}
+.urban-map-legend-group + .urban-map-legend-group {
+  margin-top: 0.55rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid #E1E5EE;
+}
+.urban-map-legend-group strong {
+  font-size: 0.76rem;
+}
+.urban-map-legend-years {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.34rem 0.6rem;
+  margin-top: 0.4rem;
+}
+.urban-legend-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 58px;
+  font-weight: 650;
+}
+.urban-legend-row.is-hidden {
+  opacity: 0.34;
+  text-decoration: line-through;
+}
+.urban-legend-swatch {
+  display: inline-block;
+  width: 16px;
+  height: 14px;
+  border: 1px solid rgba(18, 34, 60, 0.45);
+  border-radius: 2px;
+}
+.urban-map-legend-note {
+  margin: 0.55rem 0 0;
+  color: #4D5669;
+  font-size: 0.71rem;
+  line-height: 1.42;
+}
+@media (max-width: 650px) {
+  .urban-map-legend {
+    bottom: 50px;
+    left: 8px;
+    width: min(275px, calc(100% - 16px));
+    max-height: 43vh;
+  }
+}
+
+.geovisor-stage {
   height: 100vh !important;
   min-height: 100vh !important;
 }
