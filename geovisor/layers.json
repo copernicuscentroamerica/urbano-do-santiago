@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "project_id": "do-santiago",
-  "title": "Santiago: zonificación del riesgo de desastres",
+  "title": "Santiago de los Caballeros: expansión urbana (2018–2024) y simulación 2036",
   "country": {
     "code": "DO",
     "name": "República Dominicana"
@@ -55,220 +55,204 @@
   ],
   "layers": [
     {
-      "id": "do-santiago-municipio-one",
-      "title": "Límite municipal ONE (generalizado para visualización)",
-      "group": "Unidades territoriales",
+      "id": "do-santiago-perimetro",
+      "title": "Límite municipal de referencia — Santiago de los Caballeros (429.27 km²)",
+      "group": "1 · Ámbito municipal oficial (ONE)",
       "format": "geojson",
       "geometry_type": "polygon",
-      "status": "en_revision",
+      "status": "publicado",
       "source_path": "geovisor/capas/santiago_municipio_one_vista.geojson",
-      "expected_file_hint": "geovisor/capas/santiago_municipio_one_vista.geojson",
-      "resolution": "Polígono municipal ONE, generalización cartográfica 60 m, EPSG:4326",
+      "resolution": "Polígono municipal ONE (unión de 31 secciones censales, EPSG:4326)",
       "style": {
-        "fill_color": "#e4a82b",
-        "fill_opacity": 0.08,
-        "stroke_color": "#132C4A",
-        "stroke_width": 2.8
+        "fill_color": "#0C1659",
+        "fill_opacity": 0.04,
+        "stroke_color": "#0C1659",
+        "stroke_width": 2.6,
+        "visible_by_default": true
       },
-      "caveat": "Fuente: ONE; límite obtenido por unión de 31 secciones (429,27 km² originales). Geometría generalizada solo para geovisor; NO emplear para recortes, medición de superficies o decisiones normativas. El GeoPackage original EPSG:32619 permanece fuera de esta capa web."
+      "caveat": "Límite municipal derivado de las 31 secciones censales de la Oficina Nacional de Estadística (ONE), generalizado a 60 m para visualización web."
     },
     {
-      "id": "do-santiago-municipio-osm",
-      "title": "Límite municipal referencial: Santiago de los Caballeros (OSM ODbL)",
-      "group": "Unidades territoriales",
+      "id": "do-santiago-serie-integrada-2018-2036",
+      "title": "Serie integrada de expansión urbana observada (2018–2024) y simulada MOLUSCE (2027–2036)",
+      "group": "2 · Modelo multitemporal y prospectivo (Sentinel-2 + MOLUSCE)",
       "format": "geojson",
       "geometry_type": "polygon",
-      "status": "en_preparacion",
-      "source_path": "geovisor/capas/santiago_municipio_osm.geojson",
-      "expected_file_hint": "geovisor/capas/santiago_municipio_osm.geojson",
-      "resolution": "Vectorial municipal referencial (~43.343 ha, EPSG:4326)",
+      "status": "publicado",
+      "source_path": "geovisor/capas/santiago_expansion_urbana_100m_vista.geojson",
+      "resolution": "Malla vectorial de síntesis a 100 m derivada de clasificación a 10 m (5,369 polígonos)",
       "style": {
-        "fill_color": "#007F8B",
-        "fill_opacity": 0.16,
-        "stroke_color": "#14283F",
-        "stroke_width": 2.2
+        "fill_color": "#1E3A8A",
+        "fill_color_attribute": "anio",
+        "fill_color_categories": [
+          {
+            "value": 2018,
+            "label": "2018 · Observado Sentinel-2 (80.02 km²)",
+            "color": "#1E3A8A"
+          },
+          {
+            "value": 2021,
+            "label": "2021 · Expansión observada (+8.77 km² -> 88.79 km²)",
+            "color": "#0D9488"
+          },
+          {
+            "value": 2024,
+            "label": "2024 · Expansión observada (+10.63 km² -> 99.42 km²)",
+            "color": "#EAB308"
+          },
+          {
+            "value": 2027,
+            "label": "2027 · Simulación MOLUSCE (110.71 km²)",
+            "color": "#F97316"
+          },
+          {
+            "value": 2030,
+            "label": "2030 · Simulación MOLUSCE (121.25 km²)",
+            "color": "#EA580C"
+          },
+          {
+            "value": 2033,
+            "label": "2033 · Simulación MOLUSCE (131.12 km²)",
+            "color": "#DC2626"
+          },
+          {
+            "value": 2036,
+            "label": "2036 · Simulación MOLUSCE (140.39 km² · +41.2%)",
+            "color": "#991B1B"
+          }
+        ],
+        "fill_opacity": 0.76,
+        "stroke_color": "#1E293B",
+        "stroke_width": 0.25,
+        "visible_by_default": true
       },
-      "caveat": "Fuente externa abierta: OpenStreetMap contributors (ODbL). Carácter referencial hasta incorporar la cartografía oficial de secciones y 222 barrios/parajes de la ONE."
-    },
-    {
-      "id": "do-santiago-barrios-one",
-      "title": "Límite municipal y 222 barrios/parajes (ONE)",
-      "group": "Unidades territoriales",
-      "format": "geojson",
-      "geometry_type": "polygon",
-      "status": "en_preparacion",
-      "source_path": null,
-      "expected_file_hint": "geovisor/capas/santiago_barrios_one.geojson",
-      "resolution": "Cartografía censal oficial ONE",
-      "style": {
-        "fill_color": "#14283F",
-        "fill_opacity": 0.06,
-        "stroke_color": "#14283F",
-        "stroke_width": 1.5
-      },
-      "caveat": "Base territorial oficial para agregación de indicadores municipales."
-    },
-    {
-      "id": "do-santiago-inundacion-hand",
-      "title": "Escenarios de susceptibilidad a inundación HAND (Copernicus DEM GLO-30)",
-      "group": "Amenazas y exposición",
-      "format": "geojson",
-      "geometry_type": "polygon",
-      "status": "en_preparacion",
-      "source_path": null,
-      "expected_file_hint": "geovisor/capas/santiago_escenarios_hand.geojson",
-      "resolution": "30 m (Copernicus DEM GLO-30)",
-      "style": {
-        "fill_color": "#2b83ba",
-        "fill_opacity": 0.5,
-        "stroke_color": "#08519c",
-        "stroke_width": 1.2
-      },
-      "caveat": "Representa niveles relativos sobre el drenaje (HAND); requiere calibración hidrológica/hidráulica con Sentinel-1, EMS y caudales de INDRHI."
-    },
-    {
-      "id": "do-santiago-deslizamientos-crisis",
-      "title": "Piloto de estabilidad de laderas (CRISIS — lluvia y sismo)",
-      "group": "Amenazas y exposición",
-      "format": "geojson",
-      "geometry_type": "polygon",
-      "status": "en_preparacion",
-      "source_path": null,
-      "expected_file_hint": "geovisor/capas/santiago_piloto_crisis.geojson",
-      "resolution": "30 m en ladera piloto",
-      "style": {
-        "fill_color": "#d7191c",
-        "fill_opacity": 0.4,
-        "stroke_color": "#7f0000",
-        "stroke_width": 1.2
-      },
-      "caveat": "Componente piloto en configuración durante la jornada; requiere inventario y parámetros geotécnicos."
+      "caveat": "Integra la huella clasificada con Sentinel-2 L2A (validación Jaccard = 0.7205 frente a GHSL 2020) y la simulación prospectiva celular MOLUSCE cada tres años hasta 2036."
     },
     {
       "id": "do-santiago-expansion-2018",
-      "title": "Expansión urbana 2018 (clasificada; vista 100 m)",
-      "group": "Crecimiento urbano",
+      "title": "Corte individual 2018 (80.02 km² · clasificado)",
+      "group": "3 · Cortes trienales individuales (2018–2036)",
       "format": "geojson",
       "geometry_type": "polygon",
-      "status": "en_revision",
+      "status": "publicado",
       "source_path": "geovisor/capas/santiago_expansion_2018_100m_vista.geojson",
-      "expected_file_hint": "geovisor/capas/santiago_expansion_2018_100m_vista.geojson",
-      "resolution": "Vista cartográfica generalizada de 100 m a partir de raster de 10 m, EPSG:4326",
+      "resolution": "Vista cartográfica 100 m (EPSG:4326)",
       "style": {
-        "fill_color": "#355C7D",
-        "fill_opacity": 0.64,
-        "stroke_color": "#355C7D",
-        "stroke_width": 0.35
+        "fill_color": "#1E3A8A",
+        "fill_opacity": 0.68,
+        "stroke_color": "#1E3A8A",
+        "stroke_width": 0.3,
+        "visible_by_default": false
       },
-      "caveat": "Período de primera clasificación (2018 es la huella base). Vista generalizada solo para orientación visual; superficie y solapamientos deben calcularse a 10 m; clasificación pendiente de validación independiente."
+      "caveat": "Huella acumulada al corte 2018 (80.02 km² · clasificado). Actívala de forma independiente para comparar horizontes específicos."
     },
     {
       "id": "do-santiago-expansion-2021",
-      "title": "Expansión urbana 2021 (clasificada; vista 100 m)",
-      "group": "Crecimiento urbano",
+      "title": "Corte individual 2021 (88.79 km² · clasificado)",
+      "group": "3 · Cortes trienales individuales (2018–2036)",
       "format": "geojson",
       "geometry_type": "polygon",
-      "status": "en_revision",
+      "status": "publicado",
       "source_path": "geovisor/capas/santiago_expansion_2021_100m_vista.geojson",
-      "expected_file_hint": "geovisor/capas/santiago_expansion_2021_100m_vista.geojson",
-      "resolution": "Vista cartográfica generalizada de 100 m a partir de raster de 10 m, EPSG:4326",
+      "resolution": "Vista cartográfica 100 m (EPSG:4326)",
       "style": {
-        "fill_color": "#FFD54F",
-        "fill_opacity": 0.64,
-        "stroke_color": "#FFD54F",
-        "stroke_width": 0.35
+        "fill_color": "#0D9488",
+        "fill_opacity": 0.68,
+        "stroke_color": "#0D9488",
+        "stroke_width": 0.3,
+        "visible_by_default": false
       },
-      "caveat": "Período de primera clasificación (2018 es la huella base). Vista generalizada solo para orientación visual; superficie y solapamientos deben calcularse a 10 m; clasificación pendiente de validación independiente."
+      "caveat": "Huella acumulada al corte 2021 (88.79 km² · clasificado). Actívala de forma independiente para comparar horizontes específicos."
     },
     {
       "id": "do-santiago-expansion-2024",
-      "title": "Expansión urbana 2024 (clasificada; vista 100 m)",
-      "group": "Crecimiento urbano",
+      "title": "Corte individual 2024 (99.42 km² · clasificado)",
+      "group": "3 · Cortes trienales individuales (2018–2036)",
       "format": "geojson",
       "geometry_type": "polygon",
-      "status": "en_revision",
+      "status": "publicado",
       "source_path": "geovisor/capas/santiago_expansion_2024_100m_vista.geojson",
-      "expected_file_hint": "geovisor/capas/santiago_expansion_2024_100m_vista.geojson",
-      "resolution": "Vista cartográfica generalizada de 100 m a partir de raster de 10 m, EPSG:4326",
+      "resolution": "Vista cartográfica 100 m (EPSG:4326)",
       "style": {
-        "fill_color": "#E49B27",
-        "fill_opacity": 0.64,
-        "stroke_color": "#E49B27",
-        "stroke_width": 0.35
+        "fill_color": "#EAB308",
+        "fill_opacity": 0.68,
+        "stroke_color": "#EAB308",
+        "stroke_width": 0.3,
+        "visible_by_default": false
       },
-      "caveat": "Período de primera clasificación (2018 es la huella base). Vista generalizada solo para orientación visual; superficie y solapamientos deben calcularse a 10 m; clasificación pendiente de validación independiente."
+      "caveat": "Huella acumulada al corte 2024 (99.42 km² · clasificado). Actívala de forma independiente para comparar horizontes específicos."
     },
     {
       "id": "do-santiago-expansion-2027",
-      "title": "Expansión urbana 2027 (simulada; vista 100 m)",
-      "group": "Crecimiento urbano",
+      "title": "Corte individual 2027 (110.71 km² · simulado MOLUSCE)",
+      "group": "3 · Cortes trienales individuales (2018–2036)",
       "format": "geojson",
       "geometry_type": "polygon",
-      "status": "en_revision",
+      "status": "publicado",
       "source_path": "geovisor/capas/santiago_expansion_2027_100m_vista.geojson",
-      "expected_file_hint": "geovisor/capas/santiago_expansion_2027_100m_vista.geojson",
-      "resolution": "Vista cartográfica generalizada de 100 m a partir de raster de 10 m, EPSG:4326",
+      "resolution": "Vista cartográfica 100 m (EPSG:4326)",
       "style": {
-        "fill_color": "#F0ABFC",
-        "fill_opacity": 0.5,
-        "stroke_color": "#F0ABFC",
-        "stroke_width": 0.35
+        "fill_color": "#F97316",
+        "fill_opacity": 0.68,
+        "stroke_color": "#F97316",
+        "stroke_width": 0.3,
+        "visible_by_default": false
       },
-      "caveat": "Período de primera expansión simulada (escenario exploratorio tipo MOLUSCE), NO observación ni pronóstico oficial. Vista generalizada solo para orientación visual; no válida para mediciones, cruces de amenaza ni zonificación normativa."
+      "caveat": "Huella acumulada al corte 2027 (110.71 km² · simulado MOLUSCE). Actívala de forma independiente para comparar horizontes específicos."
     },
     {
       "id": "do-santiago-expansion-2030",
-      "title": "Expansión urbana 2030 (simulada; vista 100 m)",
-      "group": "Crecimiento urbano",
+      "title": "Corte individual 2030 (121.25 km² · simulado MOLUSCE)",
+      "group": "3 · Cortes trienales individuales (2018–2036)",
       "format": "geojson",
       "geometry_type": "polygon",
-      "status": "en_revision",
+      "status": "publicado",
       "source_path": "geovisor/capas/santiago_expansion_2030_100m_vista.geojson",
-      "expected_file_hint": "geovisor/capas/santiago_expansion_2030_100m_vista.geojson",
-      "resolution": "Vista cartográfica generalizada de 100 m a partir de raster de 10 m, EPSG:4326",
+      "resolution": "Vista cartográfica 100 m (EPSG:4326)",
       "style": {
-        "fill_color": "#D946EF",
-        "fill_opacity": 0.5,
-        "stroke_color": "#D946EF",
-        "stroke_width": 0.35
+        "fill_color": "#EA580C",
+        "fill_opacity": 0.68,
+        "stroke_color": "#EA580C",
+        "stroke_width": 0.3,
+        "visible_by_default": false
       },
-      "caveat": "Período de primera expansión simulada (escenario exploratorio tipo MOLUSCE), NO observación ni pronóstico oficial. Vista generalizada solo para orientación visual; no válida para mediciones, cruces de amenaza ni zonificación normativa."
+      "caveat": "Huella acumulada al corte 2030 (121.25 km² · simulado MOLUSCE). Actívala de forma independiente para comparar horizontes específicos."
     },
     {
       "id": "do-santiago-expansion-2033",
-      "title": "Expansión urbana 2033 (simulada; vista 100 m)",
-      "group": "Crecimiento urbano",
+      "title": "Corte individual 2033 (131.12 km² · simulado MOLUSCE)",
+      "group": "3 · Cortes trienales individuales (2018–2036)",
       "format": "geojson",
       "geometry_type": "polygon",
-      "status": "en_revision",
+      "status": "publicado",
       "source_path": "geovisor/capas/santiago_expansion_2033_100m_vista.geojson",
-      "expected_file_hint": "geovisor/capas/santiago_expansion_2033_100m_vista.geojson",
-      "resolution": "Vista cartográfica generalizada de 100 m a partir de raster de 10 m, EPSG:4326",
+      "resolution": "Vista cartográfica 100 m (EPSG:4326)",
       "style": {
-        "fill_color": "#A21CAF",
-        "fill_opacity": 0.5,
-        "stroke_color": "#A21CAF",
-        "stroke_width": 0.35
+        "fill_color": "#DC2626",
+        "fill_opacity": 0.68,
+        "stroke_color": "#DC2626",
+        "stroke_width": 0.3,
+        "visible_by_default": false
       },
-      "caveat": "Período de primera expansión simulada (escenario exploratorio tipo MOLUSCE), NO observación ni pronóstico oficial. Vista generalizada solo para orientación visual; no válida para mediciones, cruces de amenaza ni zonificación normativa."
+      "caveat": "Huella acumulada al corte 2033 (131.12 km² · simulado MOLUSCE). Actívala de forma independiente para comparar horizontes específicos."
     },
     {
       "id": "do-santiago-expansion-2036",
-      "title": "Expansión urbana 2036 (simulada; vista 100 m)",
-      "group": "Crecimiento urbano",
+      "title": "Corte individual 2036 (140.39 km² · simulado MOLUSCE)",
+      "group": "3 · Cortes trienales individuales (2018–2036)",
       "format": "geojson",
       "geometry_type": "polygon",
-      "status": "en_revision",
+      "status": "publicado",
       "source_path": "geovisor/capas/santiago_expansion_2036_100m_vista.geojson",
-      "expected_file_hint": "geovisor/capas/santiago_expansion_2036_100m_vista.geojson",
-      "resolution": "Vista cartográfica generalizada de 100 m a partir de raster de 10 m, EPSG:4326",
+      "resolution": "Vista cartográfica 100 m (EPSG:4326)",
       "style": {
-        "fill_color": "#701A75",
-        "fill_opacity": 0.5,
-        "stroke_color": "#701A75",
-        "stroke_width": 0.35
+        "fill_color": "#991B1B",
+        "fill_opacity": 0.68,
+        "stroke_color": "#991B1B",
+        "stroke_width": 0.3,
+        "visible_by_default": false
       },
-      "caveat": "Período de primera expansión simulada (escenario exploratorio tipo MOLUSCE), NO observación ni pronóstico oficial. Vista generalizada solo para orientación visual; no válida para mediciones, cruces de amenaza ni zonificación normativa."
+      "caveat": "Huella acumulada al corte 2036 (140.39 km² · simulado MOLUSCE). Actívala de forma independiente para comparar horizontes específicos."
     }
   ]
 }

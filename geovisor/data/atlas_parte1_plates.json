@@ -1,0 +1,182 @@
+[
+  {
+    "key": "proj-p1",
+    "number": "LÁMINA P1",
+    "shortTitle": "P1 · Histórico 2018–2024",
+    "title": "Expansión Urbana Histórica Observada con Copernicus Sentinel-2 (2018, 2021 y 2024)",
+    "sensor": "Compuestos libres de nubes Copernicus Sentinel-2 L2A (10 m) + Límite ONE",
+    "formula": "Huella_Observada(t) para t in {2018: 80.02 km2, 2021: 88.79 km2, 2024: 99.42 km2}",
+    "reading": "Muestra una aceleración sostenida del borde construido (+8.77 km² en 2018–2021 y +10.63 km² en 2021–2024), presionando suelos agrícolas del este y sureste del municipio.",
+    "imageRel": "assets/img/atlas_proyecto/lamina_p1.png",
+    "coords": [
+      [
+        -70.91727,
+        19.658903
+      ],
+      [
+        -70.608,
+        19.658903
+      ],
+      [
+        -70.608,
+        19.375402
+      ],
+      [
+        -70.91727,
+        19.375402
+      ]
+    ],
+    "swatches": [
+      {
+        "color": "#38BDF8",
+        "label": "2018 · Línea Base (80.02 km²)",
+        "desc": "18.6% de la superficie municipal"
+      },
+      {
+        "color": "#14B8A6",
+        "label": "2021 · Expansión (+8.77 km²)",
+        "desc": "Alcanza 88.79 km² (+10.97%)"
+      },
+      {
+        "color": "#FACC15",
+        "label": "2024 · Expansión (+10.63 km²)",
+        "desc": "Alcanza 99.42 km² (+11.97%)"
+      }
+    ]
+  },
+  {
+    "key": "proj-p2",
+    "number": "LÁMINA P2",
+    "shortTitle": "P2 · Serie Integrada 2036",
+    "title": "Serie Integrada Observada (2018–2024) y Simulación Celular MOLUSCE (2027–2036)",
+    "sensor": "Clasificación Sentinel-2 + Autómatas Celulares MOLUSCE + Copernicus DEM GLO-30",
+    "formula": "S_2036 = MOLUSCE( Transicion_2018_2024, Dist_Vias, Pendiente_GLO30 ) -> 140.39 km2",
+    "reading": "Bajo un escenario tendencial sin regulación adicional del PMOT, la mancha urbana pasaría del 23.2% al 32.7% del territorio municipal en doce años (+40.97 km² nuevos).",
+    "imageRel": "assets/img/atlas_proyecto/lamina_p2.png",
+    "coords": [
+      [
+        -70.91727,
+        19.658903
+      ],
+      [
+        -70.608,
+        19.658903
+      ],
+      [
+        -70.608,
+        19.375402
+      ],
+      [
+        -70.91727,
+        19.375402
+      ]
+    ],
+    "swatches": [
+      {
+        "color": "#38BDF8",
+        "label": "Núcleo 2018–2024 (99.42 km²)",
+        "desc": "Huella histórica observada por satélite"
+      },
+      {
+        "color": "#F97316",
+        "label": "Horizonte 2027 (110.71 km²)",
+        "desc": "+11.29 km² simulados a corto plazo"
+      },
+      {
+        "color": "#EA580C",
+        "label": "Horizonte 2030 (121.25 km²)",
+        "desc": "Consolidación de corredores periféricos"
+      },
+      {
+        "color": "#DC2626",
+        "label": "Horizontes 2033–2036 (140.39 km²)",
+        "desc": "Máxima extensión tendencial (+41.2%)"
+      }
+    ]
+  },
+  {
+    "key": "proj-p3",
+    "number": "LÁMINA P3",
+    "shortTitle": "P3 · Nuevos Frentes 24–36",
+    "title": "Contraste Directo: Ciudad Consolidada a 2024 vs. Suelo de Presión Futura (2027–2036)",
+    "sensor": "Diferencia espacial entre cohorte observada 2024 y cohortes simuladas 2027–2036",
+    "formula": "Presion_PMOT = Huella_Simulada_2036 (140.39 km2) - Huella_Observada_2024 (99.42 km2)",
+    "reading": "Delimita los anillos periurbanos donde el Ayuntamiento y el CDES deben anticipar reservas viales, equipamiento público, densificación ordenada y protección de suelos fértiles.",
+    "imageRel": "assets/img/atlas_proyecto/lamina_p3.png",
+    "coords": [
+      [
+        -70.91727,
+        19.658903
+      ],
+      [
+        -70.608,
+        19.658903
+      ],
+      [
+        -70.608,
+        19.375402
+      ],
+      [
+        -70.91727,
+        19.375402
+      ]
+    ],
+    "swatches": [
+      {
+        "color": "#1E40AF",
+        "label": "Huella Consolidada a 2024",
+        "desc": "99.42 km² · Ciudad actual verificada"
+      },
+      {
+        "color": "#F97316",
+        "label": "Presión Corto Plazo (2027–2030)",
+        "desc": "+21.83 km² de transición inmediata"
+      },
+      {
+        "color": "#DC2626",
+        "label": "Presión Mediano Plazo (2033–2036)",
+        "desc": "+19.14 km² adicionales de borde"
+      }
+    ]
+  },
+  {
+    "key": "proj-p4",
+    "number": "LÁMINA P4",
+    "shortTitle": "P4 · Consistencia GHSL",
+    "title": "Estructura Metropolitana al Corte Reciente 2024 y Validación Cruzada (Jaccard = 0.7205)",
+    "sensor": "Sentinel-2 L2A (2021/2024) contrastado con JRC GHSL Built-Up 2020",
+    "formula": "Indice_Jaccard = Interseccion(S2, GHSL) / Union(S2, GHSL) = 0.7205",
+    "reading": "El alto acuerdo espacial (0.7205) respalda la robustez de la clasificación local a 10 m como línea base oficial para la Fase II de cruce con inundación HAND y susceptibilidad de laderas.",
+    "imageRel": "assets/img/atlas_proyecto/lamina_p4.png",
+    "coords": [
+      [
+        -70.91727,
+        19.658903
+      ],
+      [
+        -70.608,
+        19.658903
+      ],
+      [
+        -70.608,
+        19.375402
+      ],
+      [
+        -70.91727,
+        19.375402
+      ]
+    ],
+    "swatches": [
+      {
+        "color": "#FACC15",
+        "label": "Huella Construida Verificada 2024",
+        "desc": "99.42 km² dentro del límite ONE"
+      },
+      {
+        "color": "#162A52",
+        "label": "Suelo No Urbanizado Municipal",
+        "desc": "329.85 km² agroforestales, serranos y fluviales"
+      }
+    ]
+  }
+]

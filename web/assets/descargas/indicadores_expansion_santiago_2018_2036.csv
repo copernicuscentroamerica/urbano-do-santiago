@@ -1,0 +1,8 @@
+anio,naturaleza,huella_urbana_km2,incremento_trienal_km2,variacion_trienal_pct,porcentaje_municipio_429_27km2
+2018,Observado Sentinel-2 L2A,80.02,0.0,0.0,18.64
+2021,Observado Sentinel-2 L2A,88.79,8.77,10.97,20.68
+2024,Observado Sentinel-2 L2A,99.42,10.63,11.97,23.16
+2027,Simulado MOLUSCE,110.71,11.29,11.35,25.79
+2030,Simulado MOLUSCE,121.25,10.54,9.52,28.25
+2033,Simulado MOLUSCE,131.12,9.87,8.14,30.54
+2036,Simulado MOLUSCE,140.39,9.27,7.07,32.7
